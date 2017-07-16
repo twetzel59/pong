@@ -29,6 +29,7 @@ fn main() {
         win.draw(&ball);
         win.display();
         
+        
         let keys = playerinput::handle_input();
         
         if keys.l_up {
@@ -43,7 +44,16 @@ fn main() {
             padr.on_down(&size, delta);
         }
         
-        ball.update(&size, delta);
+        ball.update(&size, padl.rect(), padr.rect(), delta);
+        
+        let who_scored = ball.check_scoring(&size);
+        match who_scored {
+            WhoScored::Left | WhoScored::Right => {
+                ball.restart(&size);
+                sb.on_score(who_scored);
+            },
+            _ => {},
+        }
         
         while let Some(e) = win.poll_event() {
             match e {

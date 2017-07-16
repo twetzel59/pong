@@ -7,7 +7,6 @@ const SPEED: f32 = 400.;
 
 pub struct Paddle<'s> {
     rect: RectangleShape<'s>,
-    side: Side,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -30,8 +29,11 @@ impl<'s> Paddle<'s> {
         
         Paddle {
             rect,
-            side,
         }
+    }
+    
+    pub fn rect(&self) -> FloatRect {
+        self.rect.global_bounds()
     }
     
     fn ensure_onscreen(&mut self, win_size: &Vector2u) {
