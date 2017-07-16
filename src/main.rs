@@ -10,6 +10,9 @@ fn main() {
     let mut win = create_window();
     let size = win.size();
     
+    let font = Font::from_file("res/UbuntuMono-R.ttf").unwrap();
+    let mut sb = Scoreboard::new(&size, &font);
+    
     let mut padl = paddle::Paddle::new(&size, paddle::Side::Left);
     let mut padr = paddle::Paddle::new(&size, paddle::Side::Right);
     
@@ -20,6 +23,7 @@ fn main() {
         let delta = clock.restart().as_seconds();
         
         win.clear(&Color::rgb(2, 10, 40));
+        win.draw(&sb);
         win.draw(&padl);
         win.draw(&padr);
         win.draw(&ball);
@@ -39,7 +43,7 @@ fn main() {
             padr.on_down(&size, delta);
         }
         
-        ball.update(delta);
+        ball.update(&size, delta);
         
         while let Some(e) = win.poll_event() {
             match e {

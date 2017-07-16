@@ -2,7 +2,7 @@ use sfml::graphics::*;
 use sfml::system::{Vector2f, Vector2u};
 
 const SIZE: f32 = 32.;
-const DEFAULT_VELOCITY: f32 = 64.;
+const DEFAULT_VELOCITY: f32 = -128.;
 
 pub struct Ball<'s> {
     rect: RectangleShape<'s>,
@@ -27,8 +27,22 @@ impl<'s> Ball<'s> {
         self.velocity = Self::new_velocity();
     }
     
-    pub fn update(&mut self, delta_seconds: f32) {
+    pub fn update(&mut self, win_size: &Vector2u, delta_seconds: f32) {
         self.rect.move_(&(self.velocity * delta_seconds));
+        
+        let current_pos = self.rect.position();
+        
+        let lower_border = win_size.y as f32 - self.rect.size().y;
+        let upper_border = 0.;
+        
+        if self.rect.position().y > lower_border {
+            //println!("offscreen");
+            self.rect.set_position2f(current_pos.x, lower_border);
+            self.velocity.y = -self.velocity.y;
+        } else if self.rect.position().y < upper_border {
+            self.rect.set_position2f(current_pos.x, upper_border);
+            self.velocity.y = -self.velocity.y;
+        }
     }
     
     fn new_velocity() -> Vector2f {

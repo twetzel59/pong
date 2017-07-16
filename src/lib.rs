@@ -5,11 +5,13 @@ use sfml::window::{ContextSettings, style, VideoMode};
 
 pub use inputreciever::InputReciever;
 pub use ball::Ball;
+pub use scoreboard::Scoreboard;
 
 pub mod paddle;
 pub mod inputreciever;
 pub mod playerinput;
 pub mod ball;
+pub mod scoreboard;
 
 pub fn create_window() -> RenderWindow {
     RenderWindow::new(VideoMode::new(800, 600, 32), "rsPong",
